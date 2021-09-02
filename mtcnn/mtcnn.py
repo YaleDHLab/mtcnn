@@ -35,7 +35,8 @@
 import cv2
 import numpy as np
 import pkg_resources
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from mtcnn.layer_factory import LayerFactory
 from mtcnn.network import Network
 from mtcnn.exceptions import InvalidImage
@@ -192,7 +193,7 @@ class MTCNN(object):
         with self.__graph.as_default():
             self.__session = tf.Session(config=config, graph=self.__graph)
 
-            weights = np.load(weights_file).item()
+            weights = np.load(weights_file, allow_pickle=True).item()
             self.__pnet = PNet(self.__session, False)
             self.__pnet.set_weights(weights['PNet'])
 
